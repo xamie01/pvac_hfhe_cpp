@@ -168,6 +168,15 @@ def main():
     
     # XOR analysis
     xor_analysis(a_data, b_data)
+
+    # Optional: analyze sum.ct if present
+    sum_candidates = []
+    try:
+        with open('sum.ct', 'rb') as _:
+            sum_data = read_file('sum.ct')
+            sum_candidates = analyze_structure(sum_data, 'sum.ct')
+    except FileNotFoundError:
+        pass
     
     # Summary
     print(f"\n{'='*60}")
@@ -194,6 +203,24 @@ def main():
         print("    Try adding pairs:")
         for (off_a, val_a), (off_b, val_b) in zip(candidates_a[:5], candidates_b[:5]):
             print(f"    {val_a} + {val_b} = {val_a + val_b}")
+
+    # Cross-match against sum.ct if available
+    if sum_candidates:
+        print()
+        print("[*] Cross-matching candidate sums with sum.ct candidates:")
+        set_a = [v for _, v in candidates_a]
+        set_b = [v for _, v in candidates_b]
+        sums = set()
+        for va in set_a:
+            for vb in set_b:
+                sums.add(va + vb)
+        matches = [(off_s, val_s) for off_s, val_s in sum_candidates if val_s in sums]
+        if matches:
+            print(f"    Found {len(matches)} matches:")
+            for off_s, val_s in matches[:10]:
+                print(f"    sum.ct offset {off_s}: {val_s}")
+        else:
+            print("    No direct matches found. Try broader interpretation or offsets.")
 
 if __name__ == '__main__':
     main()

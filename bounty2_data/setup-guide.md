@@ -54,7 +54,7 @@ wget https://github.com/octra-labs/pvac_hfhe_cpp/raw/main/bounty2_data/params.js
 # 2. Save the Python script (from the artifact above) as bounty_analyzer.py
 
 # 3. Run it
-python3 bounty_analyzer.py
+python3 bounty_analyzer-script.py
 ```
 
 ---
